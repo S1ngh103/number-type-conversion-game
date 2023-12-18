@@ -1,0 +1,10 @@
+bitToStart = 0
+
+3 Bits: 		4 2 1
+Position Mapping:	2 1 0
+
+Therefore:
+- check if integer >= 4 if so place a binary 1, else place 0
+- update integer...check integer >= 2 if so place binary 1, else 0
+- update integer...check integer >= 1 if so place binary 1, else 0
+
