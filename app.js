@@ -10,18 +10,13 @@ const fourBitBtn = document.querySelector("#fourBit-btn");
 const menuGameBtn = document.querySelector("#main-menu-game-btn");
 const menuBitBtn = document.querySelector("#main-menu-bit-btn");
 const startScreenHighscore = document.querySelector("#highscore-start-screen");
-let maxBits = 3;
-
-// Extracting number from highscore text
-// var highscoreText = playerHighScoreText.textContent.replace(/[^0-9.]/g, '');
-// var highscore = parseFloat(highscoreText);
-
-let highscore = 0;
 
 // Initializing variables
+let maxBits = 3;
 let playerScoreCount = 0;
 let currNumToConvert;
 let userInput;
+let highscore;
 
 binaryBtn.addEventListener("click", () => {
     let elementStartScreen = document.getElementById('startScreen');
@@ -40,9 +35,14 @@ twoBitBtn.addEventListener("click", () => {
     instructionText.textContent = `Convert the number to 2-bit binary:`;
 
     // Update current score
-    playerScoreText.textContent = "Current Score: 0";
-    let newHighscore = localStorage.getItem('highscore');
-    playerHighScoreText.textContent = `Highscore: ${newHighscore}`;
+    if(localStorage.getItem('currScore') != null){
+        playerScoreText.textContent = `Current Score: ${localStorage.getItem('currScore')}`;
+    }else{
+        playerScoreText.textContent = 'Current Score: 0';
+    }
+
+    // Update highscore
+    playerHighScoreText.textContent = `Highscore: ${localStorage.getItem('highscore')}`;
 
     // Swap screens
     let elementBinaryBitSelector = document.getElementById('binaryBitSelector');
@@ -61,9 +61,14 @@ threeBitBtn.addEventListener("click", () => {
     instructionText.textContent = `Convert the number to 3-bit binary:`;
 
     // Update current score
-    playerScoreText.textContent = "Current Score: 0";
-    let newHighscore = localStorage.getItem('highscore');
-    playerHighScoreText.textContent = `Highscore: ${newHighscore}`;
+    if(localStorage.getItem('currScore') != null){
+        playerScoreText.textContent = `Current Score: ${localStorage.getItem('currScore')}`;
+    }else{
+        playerScoreText.textContent = 'Current Score: 0';
+    }
+
+    // Update high score
+    playerHighScoreText.textContent = `Highscore: ${localStorage.getItem('highscore')}`;
 
     // Swap Screens
     let elementBinaryBitSelector = document.getElementById('binaryBitSelector');
@@ -82,9 +87,14 @@ fourBitBtn.addEventListener("click", () => {
     instructionText.textContent = `Convert the number to 4-bit binary:`;
 
     // Update current score
-    playerScoreText.textContent = "Current Score: 0";
-    let newHighscore = localStorage.getItem('highscore');
-    playerHighScoreText.textContent = `Highscore: ${newHighscore}`;
+    if(localStorage.getItem('currScore') != null){
+        playerScoreText.textContent = `Current Score: ${localStorage.getItem('currScore')}`;
+    }else{
+        playerScoreText.textContent = 'Current Score: 0';
+    }
+
+    // Update highscore
+    playerHighScoreText.textContent = `Highscore: ${localStorage.getItem('highscore')}`;
 
     // Swap Screens
     let elementBinaryBitSelector = document.getElementById('binaryBitSelector');
@@ -98,6 +108,9 @@ menuGameBtn.addEventListener("click", () => {
         highscore = playerScoreCount;
         localStorage.setItem('highscore', highscore);
     }
+
+    // Store the current score count if they go to main menu
+    localStorage.setItem('currScore', playerScoreCount);
 
     // Turn off game screen
     let elementBinaryGame = document.getElementById('binaryScreen');
@@ -131,14 +144,6 @@ function nextNumber(){
     numberToConvert.textContent = `Number: ${currNumToConvert}`;
 }
 
-// Listening for user to submit their entry
-var form = document.getElementById("userInputForm");
-form.addEventListener("submit", function(event){
-    event.preventDefault();
-    userInput = document.getElementById("userInput").value;
-    checkCorrectness();
-})
-
 // Updating current number to convert w/ function
 function updateCurrNum(){
     // Based on the bits selected by user, generate new number
@@ -170,7 +175,7 @@ function checkCorrectness(){
             localStorage.setItem('highscore', highscore);
         }
         playerScoreText.textContent = `Current Score: 0`;
-        playerHighScoreText.textContent = `Highscore: ${highscore}`;
+        playerHighScoreText.textContent = `Highscore: ${localStorage.getItem('highscore')}`;
         playerScoreCount = 0;
     }
 }
@@ -196,8 +201,26 @@ function convertIntToBinary(integer){
     return binaryNum.join("")
 }
 
+function initialize(){
+    if(localStorage.getItem('highscore') != null){
+        highscore = localStorage.getItem('highscore');
+    }else{
+        highscore = 0;
+        localStorage.setItem('highscore', highscore);
+    }
+}
+
+initialize();
 // Initial start screen high score
-startScreenHighscore.textContent = `Your highscore: 0`;
+startScreenHighscore.textContent = `Your highscore: ${localStorage.getItem('highscore')}`;
+
+// Listening for user to submit their entry
+var form = document.getElementById("userInputForm");
+form.addEventListener("submit", function(event){
+    event.preventDefault();
+    userInput = document.getElementById("userInput").value;
+    checkCorrectness();
+})
 
 // TO DO:
 // Point system (Done)
@@ -205,6 +228,6 @@ startScreenHighscore.textContent = `Your highscore: 0`;
 // Add logic to not have duplicate numbers between runs of a submission in updateCurrentNum (In progress)
 // Success and Incorrect Pages (to implement smoother gameplay and automatic reroll) (Mostly done)
 
-// Reset scores between bit types
-// Local storage 
-// Hall of fame for scores
+// Reset scores between bit types (need to do)
+// Local storage (mostly done)
+// Hall of fame for scores (need to do)
