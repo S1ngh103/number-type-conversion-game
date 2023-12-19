@@ -9,12 +9,14 @@ const threeBitBtn = document.querySelector("#threeBit-btn");
 const fourBitBtn = document.querySelector("#fourBit-btn");
 const menuGameBtn = document.querySelector("#main-menu-game-btn");
 const menuBitBtn = document.querySelector("#main-menu-bit-btn");
-// const menuBitBtn = document.querySelector("#main-menu-bit-btn");
+const startScreenHighscore = document.querySelector("#highscore-start-screen");
 let maxBits = 3;
 
 // Extracting number from highscore text
-var highscoreText = playerHighScoreText.textContent.replace(/[^0-9.]/g, '');
-var highscore = parseFloat(highscoreText);
+// var highscoreText = playerHighScoreText.textContent.replace(/[^0-9.]/g, '');
+// var highscore = parseFloat(highscoreText);
+
+let highscore = 0;
 
 // Initializing variables
 let playerScoreCount = 0;
@@ -37,6 +39,11 @@ twoBitBtn.addEventListener("click", () => {
     numberToConvert.textContent = `Number: ${currNumToConvert}`;
     instructionText.textContent = `Convert the number to 2-bit binary:`;
 
+    // Update current score
+    playerScoreText.textContent = "Current Score: 0";
+    let newHighscore = localStorage.getItem('highscore');
+    playerHighScoreText.textContent = `Highscore: ${newHighscore}`;
+
     // Swap screens
     let elementBinaryBitSelector = document.getElementById('binaryBitSelector');
     elementBinaryBitSelector.style.display = 'none';
@@ -52,6 +59,11 @@ threeBitBtn.addEventListener("click", () => {
     // Update number and text
     numberToConvert.textContent = `Number: ${currNumToConvert}`;
     instructionText.textContent = `Convert the number to 3-bit binary:`;
+
+    // Update current score
+    playerScoreText.textContent = "Current Score: 0";
+    let newHighscore = localStorage.getItem('highscore');
+    playerHighScoreText.textContent = `Highscore: ${newHighscore}`;
 
     // Swap Screens
     let elementBinaryBitSelector = document.getElementById('binaryBitSelector');
@@ -69,6 +81,11 @@ fourBitBtn.addEventListener("click", () => {
     numberToConvert.textContent = `Number: ${currNumToConvert}`;
     instructionText.textContent = `Convert the number to 4-bit binary:`;
 
+    // Update current score
+    playerScoreText.textContent = "Current Score: 0";
+    let newHighscore = localStorage.getItem('highscore');
+    playerHighScoreText.textContent = `Highscore: ${newHighscore}`;
+
     // Swap Screens
     let elementBinaryBitSelector = document.getElementById('binaryBitSelector');
     elementBinaryBitSelector.style.display = 'none';
@@ -77,26 +94,36 @@ fourBitBtn.addEventListener("click", () => {
 })
 
 menuGameBtn.addEventListener("click", () => {
+    if(playerScoreCount > highscore){
+        highscore = playerScoreCount;
+        localStorage.setItem('highscore', highscore);
+    }
+
+    // Turn off game screen
     let elementBinaryGame = document.getElementById('binaryScreen');
     elementBinaryGame.style.display = 'none';
 
+    // Turn on start screen and update high score
+    let newHighscore = localStorage.getItem('highscore');
     let elementStartScreen = document.getElementById('startScreen');
+    startScreenHighscore.textContent = `Your highscore: ${newHighscore}`;
     elementStartScreen.style.display = 'block';
 })
 
 menuBitBtn.addEventListener("click", () => {
+    // Turn off binary bit selection screen
     let elementBinaryBitSelector = document.getElementById('binaryBitSelector');
     elementBinaryBitSelector.style.display = 'none';
 
+    // turn on game screen
     let elementStartScreen = document.getElementById('startScreen');
     elementStartScreen.style.display = 'block';
 })
 
-numberToConvert.textContent = `Number: ${currNumToConvert}`;
 // Listening for reroll from user
 function nextNumber(){
     // Clear input box and success/failure note
-    resultText.textContent = "";
+    // resultText.textContent = "";
     document.getElementById("userInput").value = "";
 
     // Set new number to convert
@@ -114,6 +141,7 @@ form.addEventListener("submit", function(event){
 
 // Updating current number to convert w/ function
 function updateCurrNum(){
+    // Based on the bits selected by user, generate new number
     switch(maxBits){
         case 2:
             currNumToConvert = Math.floor(Math.random()* 3)+1;
@@ -137,10 +165,9 @@ function checkCorrectness(){
         nextNumber();
     }else{
         resultText.textContent = `INCORRECT!`;
-        console.log(`${playerScoreCount} and ${highscore}`)
         if(playerScoreCount > highscore){
             highscore = playerScoreCount;
-            console.log('new highscore is ', highscore);
+            localStorage.setItem('highscore', highscore);
         }
         playerScoreText.textContent = `Current Score: 0`;
         playerHighScoreText.textContent = `Highscore: ${highscore}`;
@@ -169,9 +196,15 @@ function convertIntToBinary(integer){
     return binaryNum.join("")
 }
 
+// Initial start screen high score
+startScreenHighscore.textContent = `Your highscore: 0`;
 
 // TO DO:
-// Points for consecutive correct answers
-//      - Reset to 0 when incorrect
-//      - Scoreboard (maybe live)
-// Success and Incorrect Pages (to implement smoother gameplay and automatic reroll)
+// Point system (Done)
+//      - Implement into local storage (In progress)
+// Add logic to not have duplicate numbers between runs of a submission in updateCurrentNum (In progress)
+// Success and Incorrect Pages (to implement smoother gameplay and automatic reroll) (Mostly done)
+
+// Reset scores between bit types
+// Local storage 
+// Hall of fame for scores

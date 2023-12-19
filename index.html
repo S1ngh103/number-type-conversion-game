@@ -9,52 +9,58 @@
 </head>
 
 <body>
-    <div class="screen" id="startScreen" style="display:block">
-        <!-- Instructional text -->
-        <h1 class="gameText" id="titleText">Number Type Conversion
+    <div class="outterdiv">
+        <!-- Start screen -->
+        <div class="screen" id="startScreen" style="display:block">
+            <!-- Instructional text -->
+            <h1 class="gameText" id="titleText">Number Type Conversion
+                <br>
+                <h2>Choose your game mode!</h2>
+            </h1>
+            
+            <!-- Buttons to choose which game to play -->
+            <div class="choiceBtns">
+                <button class="buttons" id="binary-btn">Binary</button>
+                <button class="buttons" id="hex-btn">Hexadecimal</button>
+            </div>
+
+            <h2 class="gameText" id="highscore-start-screen"></h2>
+        </div>
+
+        <!-- Bit selection screen -->
+        <div class="screen" id="binaryBitSelector" style="display:none">
+            <!-- Instructional text -->
+            <h1 class="gameText" id="titleText">Choose your bits!</h1>
+            
+            <div class="choiceBtns">
+                <button class="buttons" id="twoBit-btn">2 bits</button>
+                <button class="buttons" id="threeBit-btn">3 bits</button>
+                <button class="buttons" id="fourBit-btn">4 bits</button>
+            </div>
             <br>
-            <h2>Choose your game mode!</h2>
-        </h1>
-        
-        <!-- Buttons to choose which game to play -->
-        <div class="choiceBtns">
-            <button class="buttons" id="binary-btn">Binary</button>
-            <button class="buttons" id="hex-btn">Hexadecimal</button>
+            <button class="buttons" id="main-menu-bit-btn">Main Menu</button>
+        </div>
+
+        <!-- Screen for binary conversion game -->
+        <div class="screen" id="binaryScreen" style="display:none">
+            <!-- Instructional text -->
+            <h1 class="gameText" id="instructionText">Convert the number to binary:</h1>
+            <h2 class="gameText" id="numberToConvert">Number: </h2>
+            <h2 class="gameText" id="resultText"></h2>
+
+            <!-- Users Input -->
+            <form id="userInputForm">
+                <label for="userInput">Your Guess:</label>
+                <input type="text" id="userInput" name="userInput" required>
+                <input class="submission" type="submit" value="Submit">
+            </form>
+            
+            <!-- Score Counts -->
+            <h3 class="gameText" id="currScore"></h3>
+            <h3 class="gameText" id="highScore"></h3>
+            <button class="buttons" id="main-menu-game-btn">Main Menu</button>
         </div>
     </div>
-
-    <div class="screen" id="binaryBitSelector" style="display:none">
-        <!-- Instructional text -->
-        <h1 class="gameText" id="titleText">Choose your bits!</h1>
-        
-        <div class="choiceBtns">
-            <button class="buttons" id="twoBit-btn">2 bits</button>
-            <button class="buttons" id="threeBit-btn">3 bits</button>
-            <button class="buttons" id="fourBit-btn">4 bits</button>
-        </div>
-        <br>
-        <button class="buttons" id="main-menu-bit-btn">Main Menu</button>
-    </div>
-
-    <div class="screen" id="binaryScreen" style="display:none">
-        <!-- Instructional text -->
-        <h1 class="gameText" id="instructionText">Convert the number to binary:</h1>
-        <h2 class="gameText" id="numberToConvert">Number: </h2>
-        <h2 class="gameText" id="resultText"></h2>
-
-        <!-- Users Input -->
-        <form id="userInputForm">
-            <label for="userInput">Your Guess:</label>
-            <input type="text" id="userInput" name="userInput" required>
-            <input class="submission" type="submit" value="Submit">
-        </form>
-        
-        <!-- Score Counts -->
-        <h3 class="gameText" id="currScore">Current Score: 0</h3>
-        <h3 class="gameText" id="highScore">Highscore: 0</h3>
-        <button class="buttons" id="main-menu-game-btn">Main Menu</button>
-    </div>
-    
     <script src="app.js"></script>
 </body>
 
