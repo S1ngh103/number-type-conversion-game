@@ -17,6 +17,13 @@ let playerScoreCount = 0;
 let currNumToConvert;
 let userInput;
 let highscore;
+var form = document.getElementById("userInputForm");
+
+form.addEventListener("submit", function(event){
+    event.preventDefault();
+    userInput = document.getElementById("userInput").value;
+    checkCorrectness();
+})
 
 binaryBtn.addEventListener("click", () => {
     let elementStartScreen = document.getElementById('startScreen');
@@ -109,7 +116,7 @@ menuGameBtn.addEventListener("click", () => {
         localStorage.setItem('highscore', highscore);
     }
 
-    // Store the current score count if they go to main menu
+    // Store the current score count if they go to main menu based
     localStorage.setItem('currScore', playerScoreCount);
 
     // Turn off game screen
@@ -215,12 +222,7 @@ initialize();
 startScreenHighscore.textContent = `Your highscore: ${localStorage.getItem('highscore')}`;
 
 // Listening for user to submit their entry
-var form = document.getElementById("userInputForm");
-form.addEventListener("submit", function(event){
-    event.preventDefault();
-    userInput = document.getElementById("userInput").value;
-    checkCorrectness();
-})
+
 
 // TO DO:
 // Point system (Done)
