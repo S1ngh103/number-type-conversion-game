@@ -13,10 +13,13 @@ const startScreenHighscore = document.querySelector("#highscore-start-screen");
 
 // Initializing variables
 let maxBits = 3;
-let playerScoreCount = 0;
+let playerTwoBitScoreCount = 0;
+let playerThreeBitScoreCount = 0;
+let playerFourBitScoreCount = 0;
 let currNumToConvert;
 let userInput;
 let highscore;
+
 var form = document.getElementById("userInputForm");
 
 form.addEventListener("submit", function(event){
@@ -42,8 +45,8 @@ twoBitBtn.addEventListener("click", () => {
     instructionText.textContent = `Convert the number to 2-bit binary:`;
 
     // Update current score
-    if(localStorage.getItem('currScore') != null){
-        playerScoreText.textContent = `Current Score: ${localStorage.getItem('currScore')}`;
+    if(localStorage.getItem('twoBitScore') != null){
+        playerScoreText.textContent = `Current Score: ${localStorage.getItem('twoBitScore')}`;
     }else{
         playerScoreText.textContent = 'Current Score: 0';
     }
@@ -68,8 +71,8 @@ threeBitBtn.addEventListener("click", () => {
     instructionText.textContent = `Convert the number to 3-bit binary:`;
 
     // Update current score
-    if(localStorage.getItem('currScore') != null){
-        playerScoreText.textContent = `Current Score: ${localStorage.getItem('currScore')}`;
+    if(localStorage.getItem('threeBitScore') != null){
+        playerScoreText.textContent = `Current Score: ${localStorage.getItem('threeBitScore')}`;
     }else{
         playerScoreText.textContent = 'Current Score: 0';
     }
@@ -94,14 +97,18 @@ fourBitBtn.addEventListener("click", () => {
     instructionText.textContent = `Convert the number to 4-bit binary:`;
 
     // Update current score
-    if(localStorage.getItem('currScore') != null){
-        playerScoreText.textContent = `Current Score: ${localStorage.getItem('currScore')}`;
+    if(localStorage.getItem('fourBitScore') != null){
+        playerScoreText.textContent = `Current Score: ${localStorage.getItem('fourBitScore')}`;
     }else{
         playerScoreText.textContent = 'Current Score: 0';
     }
 
     // Update highscore
-    playerHighScoreText.textContent = `Highscore: ${localStorage.getItem('highscore')}`;
+    if(localStorage.getItem('fourBitScore') != null){
+        playerHighScoreText.textContent = `Highscore: ${localStorage.getItem('highscore')}`;
+    }else{
+        playerHighScoreText.textContent = 'Highscore: 0';
+    }
 
     // Swap Screens
     let elementBinaryBitSelector = document.getElementById('binaryBitSelector');
@@ -111,13 +118,8 @@ fourBitBtn.addEventListener("click", () => {
 })
 
 menuGameBtn.addEventListener("click", () => {
-    if(playerScoreCount > highscore){
-        highscore = playerScoreCount;
-        localStorage.setItem('highscore', highscore);
-    }
-
-    // Store the current score count if they go to main menu based
-    localStorage.setItem('currScore', playerScoreCount);
+    updateHighScore();
+    updateCurrentScores();
 
     // Turn off game screen
     let elementBinaryGame = document.getElementById('binaryScreen');
@@ -132,6 +134,8 @@ menuGameBtn.addEventListener("click", () => {
 
 menuBitBtn.addEventListener("click", () => {
     // Turn off binary bit selection screen
+    updateCurrentScores();
+
     let elementBinaryBitSelector = document.getElementById('binaryBitSelector');
     elementBinaryBitSelector.style.display = 'none';
 
@@ -173,17 +177,76 @@ function checkCorrectness(){
     let expectedResult = convertIntToBinary(currNumToConvert);
     if(expectedResult == userInput){
         resultText.textContent = `GREAT JOB!`;
-        playerScoreText.textContent = `Current Score: ${playerScoreCount+=100}`;
+        switch(maxBits){
+            case 2:
+                playerScoreText.textContent = `Current Score: ${playerTwoBitScoreCount+=100}`;
+                break;
+            case 3:
+                playerScoreText.textContent = `Current Score: ${playerThreeBitScoreCount+=100}`;
+                break;
+            case 4:
+                playerScoreText.textContent = `Current Score: ${playerFourBitScoreCount+=100}`;
+                break;
+        }
         nextNumber();
     }else{
         resultText.textContent = `INCORRECT!`;
-        if(playerScoreCount > highscore){
-            highscore = playerScoreCount;
-            localStorage.setItem('highscore', highscore);
-        }
+        updateHighScore();
         playerScoreText.textContent = `Current Score: 0`;
         playerHighScoreText.textContent = `Highscore: ${localStorage.getItem('highscore')}`;
-        playerScoreCount = 0;
+        resetScores();
+        updateCurrentScores();
+    }
+}
+
+function updateCurrentScores(){
+    switch(maxBits){
+        case 2:
+            localStorage.setItem('twoBitScore', playerTwoBitScoreCount);
+            break;
+        case 3:
+            localStorage.setItem('threeBitScore', playerThreeBitScoreCount);
+            break;
+        case 4:
+            localStorage.setItem('fourBitScore', playerFourBitScoreCount);
+            break;
+    }
+}
+
+function updateHighScore(){
+    switch(maxBits){
+        case 2:
+            if(playerTwoBitScoreCount > highscore){
+                highscore = playerTwoBitScoreCount;
+                localStorage.setItem('highscore', highscore);
+            }
+            break;
+        case 3:
+            if(playerThreeBitScoreCount > highscore){
+                highscore = playerThreeBitScoreCount;
+                localStorage.setItem('highscore', highscore);
+            }
+            break;
+        case 4:
+            if(playerFourBitScoreCount > highscore){
+                highscore = playerFourBitScoreCount;
+                localStorage.setItem('highscore', highscore);
+            }
+            break;
+    }
+}
+
+function resetScores(){
+    switch(maxBits){
+        case 2:
+            playerTwoBitScoreCount = 0;
+            break;
+        case 3:
+            playerThreeBitScoreCount = 0;
+            break;
+        case 4:
+            playerFourBitScoreCount = 0;
+            break;
     }
 }
 
@@ -209,8 +272,23 @@ function convertIntToBinary(integer){
 }
 
 function initialize(){
+    if(localStorage.getItem('twoBitScore') != null){
+        playerTwoBitScoreCount = parseInt(localStorage.getItem('twoBitScore'));
+    }else{
+        playerTwoBitScoreCount = 0;
+    }
+    if(localStorage.getItem('threeBitScore') != null){
+        playerThreeBitScoreCount = parseInt(localStorage.getItem('threeBitScore'));
+    }else{
+        playerThreeBitScoreCount = 0;
+    }
+    if(localStorage.getItem('fourBitScore') != null){
+        playerFourBitScoreCount = parseInt(localStorage.getItem('fourBitScore'));
+    }else{
+        playerFourBitScoreCount = 0;
+    }
     if(localStorage.getItem('highscore') != null){
-        highscore = localStorage.getItem('highscore');
+        highscore = parseInt(localStorage.getItem('highscore'));
     }else{
         highscore = 0;
         localStorage.setItem('highscore', highscore);
