@@ -22,12 +22,14 @@ let highscore;
 
 var form = document.getElementById("userInputForm");
 
+// Listening to the submit button from user
 form.addEventListener("submit", function(event){
     event.preventDefault();
     userInput = document.getElementById("userInput").value;
     checkCorrectness();
 })
 
+// Changing to binary game on click
 binaryBtn.addEventListener("click", () => {
     let elementStartScreen = document.getElementById('startScreen');
     elementStartScreen.style.display = 'none';
@@ -117,6 +119,7 @@ fourBitBtn.addEventListener("click", () => {
     elementBinaryGame.style.display = 'block';
 })
 
+// Backing out to main menu from game
 menuGameBtn.addEventListener("click", () => {
     updateHighScore();
     updateCurrentScores();
@@ -132,6 +135,7 @@ menuGameBtn.addEventListener("click", () => {
     elementStartScreen.style.display = 'block';
 })
 
+// Backing out to main menu from bit selection screen
 menuBitBtn.addEventListener("click", () => {
     // Turn off binary bit selection screen
     updateCurrentScores();
@@ -144,7 +148,7 @@ menuBitBtn.addEventListener("click", () => {
     elementStartScreen.style.display = 'block';
 })
 
-// Listening for reroll from user
+// Grabbing the next number
 function nextNumber(){
     // Clear input box and success/failure note
     // resultText.textContent = "";
@@ -171,8 +175,7 @@ function updateCurrNum(){
     }
 }
 
-// Check if users input was correct
-// Likely will increment user points here
+// Check if users input was correct and update scores
 function checkCorrectness(){
     let expectedResult = convertIntToBinary(currNumToConvert);
     if(expectedResult == userInput){
@@ -250,16 +253,13 @@ function resetScores(){
     }
 }
 
-// Custom coding math w/ little to no help
+// Custom function to convert integer to binary
 function convertIntToBinary(integer){
-    // Need array to keep track of position and the binary number
     const binaryNum = [];
 
     let bitCount = maxBits-1;
     while(binaryNum.length != maxBits){
         if(integer >= 2**bitCount){
-            // How I debugged this process
-            // console.log(`${integer} - ${2**bitCount}`);
             integer -= 2**bitCount;
             binaryNum.push(1);
         }else{
